@@ -11,11 +11,12 @@ Redmine::Plugin.register :redmine_git_hosting do
 	name 'Redmine Git Hosting Plugin'
 	author 'Eric Bishop, Christian Käser, Zsolt Parragi, Yunsang Choi, Joshua Hogendorn, Jan Schulz-Hofen and others'
 	description 'Enables Redmine to control hosting of git repositories'
-	version '0.1.0'
+	version '0.1.1'
 	settings :default => {
 		'allProjectsUseGit' => 'false',
 		'gitServer' => 'localhost',
 		'httpServer' => 'localhost',
+		'sshOptions' => '-o BatchMode=yes -o StrictHostKeyChecking=no',
 		'gitUser' => 'git',
 		'gitUserIdentityFile'  => RAILS_ROOT + '/.ssh/git_user_id_rsa',
 		'gitoliteIdentityFile' => RAILS_ROOT + '/.ssh/gitolite_admin_id_rsa',

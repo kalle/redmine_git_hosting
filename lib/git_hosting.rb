@@ -73,6 +73,7 @@ module GitHosting
 		git_user_server=git_user + "@" + Setting.plugin_redmine_git_hosting['gitServer']
 		git_user_key=Setting.plugin_redmine_git_hosting['gitUserIdentityFile']
 		gitolite_key=Setting.plugin_redmine_git_hosting['gitoliteIdentityFile']
+		ssh_options=Setting.plugin_redmine_git_hosting['sshOptions']
 		File.open(git_exec_path(), "w") do |f|
 			f.puts '#!/bin/sh'
 			f.puts 'cmd=$(printf "\"%s\" " "$@")'
@@ -80,12 +81,12 @@ module GitHosting
 			f.puts '	cd ~'
 			f.puts '	eval "git $cmd"'
 			f.puts "else"
-			f.puts "	ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i #{git_user_key} #{git_user_server} \"git $cmd\""
+			f.puts "	ssh #{ssh_options} -i #{git_user_key} #{git_user_server} \"git $cmd\""
 			f.puts 'fi'
 		end
 		File.open(gitolite_ssh_path(), "w") do |f|
 			f.puts "#!/bin/sh"
-			f.puts "exec ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i #{gitolite_key} \"$@\""
+			f.puts "exec ssh #{ssh_options} -i #{gitolite_key} \"$@\""
 		end
 		File.open(git_user_runner_path(), "w") do |f|
 			f.puts "#!/bin/sh"
@@ -93,7 +94,7 @@ module GitHosting
 			f.puts "	cd ~"
 			f.puts "	$@"
 			f.puts "else"
-			f.puts "	ssh -o BatchMode=yes -o StrictHostKeyChecking=no -i #{git_user_key} #{git_user_server} \"$@\""
+			f.puts "	ssh #{ssh_options} -i #{git_user_key} #{git_user_server} \"$@\""
 			f.puts "fi"
 		end
 
