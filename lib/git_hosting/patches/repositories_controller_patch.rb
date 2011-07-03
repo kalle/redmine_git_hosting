@@ -13,7 +13,7 @@ module GitHosting
 			def edit_with_scm_settings
 				params[:repository] ||= {}
 				if params[:repository_scm] == "Git"
-					repo_name= @project.parent ? File.join(@project.parent.identifier,@project.identifier) : @project.identifier
+					repo_path=repo.url.split(Setting.plugin_redmine_git_hosting['gitRepositoryBasePath'])[1]
 					params[:repository][:url] = File.join(Setting.plugin_redmine_git_hosting['gitRepositoryBasePath'], "#{repo_name}.git")
 				end
 				
